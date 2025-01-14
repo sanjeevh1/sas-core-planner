@@ -2,5 +2,4 @@ Flask[async]
 Gunicorn 
 aiohttp 
 asyncio
-regex
 bs4

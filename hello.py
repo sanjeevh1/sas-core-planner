@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import aiohttp
 import asyncio
 from course import Course
-from regex import re
+import re
 
 app = Flask(__name__)
 
