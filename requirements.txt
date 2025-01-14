@@ -3,3 +3,4 @@ Gunicorn
 aiohttp 
 asyncio
 regex
+bs4
