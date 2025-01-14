@@ -24,7 +24,7 @@ def get_course(cells) -> Course:
     core_codes = re.split(r"/, | or /", cells[3].get_text())
     return Course(number, name, credits, core_codes)
 
-def add_courses(courses: set[Course], response: aiohttp._RequestContextManager):
+def add_courses(courses: set[Course], response):
     """Adds the courses from the given HTTP response to the given courses set"""
     soup = BeautifulSoup(response.text)
     tables = soup.find_all("table", class_="sas-responsive-tbl")
