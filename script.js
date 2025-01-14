@@ -41,3 +41,5 @@ function getCourses() {
     }
     return courses;
 }
+
+console.log(getCourses());
