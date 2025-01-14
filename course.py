@@ -1,7 +1,7 @@
 class Course:
     """Stores the number, name, credits, and core codes of a course"""
     
-    def __init__(self, number, name, credits, core_codes):
+    def __init__(self, number: int, name: str, credits: int, core_codes: list[str]):
         self.number = number
         self.name = name
         self.credits = credits
