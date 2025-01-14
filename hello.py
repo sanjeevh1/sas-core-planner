@@ -17,5 +17,5 @@ PATHS = [
 async def hello_world():
     async with aiohttp.ClientSession() as session:
         tasks = [session.get(BASE_URL + path) for path in PATHS]
-        responses = asyncio.gather(*tasks)
-    return responses
+        responses = await asyncio.gather(*tasks)
+    return str(responses)
