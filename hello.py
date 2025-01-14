@@ -26,15 +26,15 @@ def get_course(cells) -> Course:
 
 def add_courses(courses: set[Course], response):
     """Adds the courses from the given HTTP response to the given courses set"""
-    soup = BeautifulSoup(response.text)
+    soup = BeautifulSoup(response.text, "html.parser")
     tables = soup.find_all("table", class_="sas-responsive-tbl")
     for table in tables:
         for row in table.children:
             cells = row.children
-            is_course = cells.length == 4 and cells[0].get_text() != "Course #"
+            is_course = len(cells) == 4 and cells[0].get_text() != "Course #"
             if is_course:
                 course = get_course(cells)
-                courses.insert(course)
+                courses.add(course)
                 
     
     
