@@ -17,12 +17,27 @@ PATHS = [
     "areas-of-inquiry-social-and-historical-analysis"
 ]
 
-def get_course(cells) -> Course:
-    """Converts cells into a Course object"""
-    number = re.match(r"\d\d:\d\d\d:\d\d\d",cells[0].get_text()).group()
+def get_course(row) -> Course:
+    """
+    Converts cells into a Course object
+    Returns None if a Course object cannot be formed
+    """
+    cells = list(row.find_all("td"))
+    if len(cells) != 4:
+        return None
+    number_match = re.match(r"\d\d:\d\d\d:\d\d\d",cells[0].get_text())
+    if number_match is None:
+        return None
+    number = number_match.group()
     name = cells[1].get_text()
-    credits = float(re.match(r"\d(\.\d)?", cells[2].get_text()).group())
-    core_codes = re.split(r", | or ", cells[3].get_text())
+    credits_match = re.match(r"\d(\.\d)?", cells[2].get_text())
+    if credits_match is None:
+        return None
+    credits = float(credits_match.group())                         
+    core_codes = re.findall(r"CCD|CCO|NS|SCL|HST|AHo|AHp|AHq|AHr|WCr|WCd|WC|QQ|QR", cells[3].get_text(), re.IGNORECASE)
+    if core_codes is None:
+        return None
+    core_codes = [code.upper() for code in core_codes]
     return Course(number, name, credits, core_codes)
 
 def add_courses(courses: set[Course], response_text):
@@ -32,11 +47,9 @@ def add_courses(courses: set[Course], response_text):
     for table in tables:
         rows = table.find_all("tr")
         for row in rows:
-            cells = list(row.find_all("td"))
-            is_course = len(cells) == 4 and re.match(r"\d\d:\d\d\d:\d\d\d",cells[0].get_text()) and re.match(r"\d(.\d)?", cells[2].get_text())
-            if is_course:
-                course = get_course(cells)
-                courses.add(course)                       
+            course = get_course(row)
+            if course is not None:
+                courses.add(course)                    
 
 @app.route("/")
 def fetch_courses():
