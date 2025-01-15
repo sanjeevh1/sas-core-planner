@@ -4,3 +4,4 @@ aiohttp
 asyncio
 bs4
 requests
+flask-cors

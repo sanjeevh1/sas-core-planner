@@ -5,8 +5,10 @@ import asyncio
 from course import Course
 import re
 import requests
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 BASE_URL = "https://sasundergrad.rutgers.edu/degree-requirements/core/"
 PATHS = [
