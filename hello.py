@@ -35,20 +35,14 @@ def add_courses(courses: set[Course], response_text):
             cells = list(row.find_all("td"))
             is_course = len(cells) == 4 and re.match(r"\d\d:\d\d\d:\d\d\d",cells[0].get_text()) and re.match(r"\d(.\d)?", cells[2].get_text())
             if is_course:
-                try:
-                    course = get_course(cells)
-                    courses.add(course)
-                except:
-                    print(row)
-                    print(row.get_text())
-                    raise TypeError("Cannot parse row")                              
-    
-    
+                course = get_course(cells)
+                courses.add(course)                       
 
 @app.route("/")
-def hello_world():
+def fetch_courses():
     courses = set()
     for path in PATHS:
         response = requests.get(BASE_URL + path)
         add_courses(courses, response.text)
-    return list(courses)
+    course_list = [course.__dict__ for course in courses]
+    return course_list
