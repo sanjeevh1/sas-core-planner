@@ -4,6 +4,7 @@ import aiohttp
 import asyncio
 from course import Course
 import re
+import requests
 
 app = Flask(__name__)
 
@@ -20,8 +21,8 @@ def get_course(cells) -> Course:
     """Converts cells into a Course object"""
     number = cells[0].get_text()
     name = cells[1].get_text()
-    credits = int(cells[2].get_text()[0])
-    core_codes = re.split(r"/, | or /", cells[3].get_text())
+    credits = float(re.match(r"\d(\.\d)?", cells[2].get_text()).group())
+    core_codes = re.split(r", | or ", cells[3].get_text())
     return Course(number, name, credits, core_codes)
 
 def add_courses(courses: set[Course], response_text):
@@ -32,21 +33,22 @@ def add_courses(courses: set[Course], response_text):
         rows = table.find_all("tr")
         for row in rows:
             cells = list(row.find_all("td"))
-            is_course = len(cells) == 4 and cells[0].get_text() != "Course #"
+            is_course = len(cells) == 4 and re.match(r"\d\d:\d\d\d:\d\d\d",cells[0].get_text()) and re.match(r"\d(.\d)?", cells[2].get_text())
             if is_course:
-                course = get_course(cells)
-                courses.add(course)
-                
+                try:
+                    course = get_course(cells)
+                    courses.add(course)
+                except:
+                    print(row)
+                    print(row.get_text())
+                    raise TypeError("Cannot parse row")                              
     
     
 
 @app.route("/")
-async def hello_world():
-    async with aiohttp.ClientSession() as session:
-        tasks = [session.get(BASE_URL + path) for path in PATHS]
-        responses = await asyncio.gather(*tasks)
+def hello_world():
     courses = set()
-    for response in responses:
-        response_text = await response.text()
-        add_courses(courses, response_text)
-    return str(responses)
+    for path in PATHS:
+        response = requests.get(BASE_URL + path)
+        add_courses(courses, response.text)
+    return list(courses)
