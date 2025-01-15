@@ -19,7 +19,7 @@ PATHS = [
 
 def get_course(cells) -> Course:
     """Converts cells into a Course object"""
-    number = cells[0].get_text()
+    number = re.match(r"\d\d:\d\d\d:\d\d\d",cells[0].get_text()).group()
     name = cells[1].get_text()
     credits = float(re.match(r"\d(\.\d)?", cells[2].get_text()).group())
     core_codes = re.split(r", | or ", cells[3].get_text())
