@@ -24,13 +24,14 @@ def get_course(cells) -> Course:
     core_codes = re.split(r"/, | or /", cells[3].get_text())
     return Course(number, name, credits, core_codes)
 
-def add_courses(courses: set[Course], response):
+def add_courses(courses: set[Course], response_text):
     """Adds the courses from the given HTTP response to the given courses set"""
-    soup = BeautifulSoup(response.text, "html.parser")
+    soup = BeautifulSoup(response_text, "html.parser")
     tables = soup.find_all("table", class_="sas-responsive-tbl")
     for table in tables:
-        for row in table.children:
-            cells = row.children
+        rows = table.find_all("tr")
+        for row in rows:
+            cells = list(row.find_all("td"))
             is_course = len(cells) == 4 and cells[0].get_text() != "Course #"
             if is_course:
                 course = get_course(cells)
@@ -46,5 +47,6 @@ async def hello_world():
         responses = await asyncio.gather(*tasks)
     courses = set()
     for response in responses:
-        add_courses(courses, response)
+        response_text = await response.text()
+        add_courses(courses, response_text)
     return str(responses)

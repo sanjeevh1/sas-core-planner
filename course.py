@@ -12,3 +12,9 @@ class Course:
         Compares the two Courses by number
         """
         return self.number == other.number
+    
+    def __hash__(self):
+        """
+        Returns the hash of the Course's number
+        """
+        return hash(self.number)
