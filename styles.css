@@ -4,3 +4,10 @@
     gap: 10px;
     margin: 10px;
 }
+
+header {
+    position: sticky;
+    top: 0;
+    background-color: yellow;
+    margin: 0;
+}
