@@ -11,7 +11,7 @@ async function fetchCourses() {
     console.log(courses);
     courses.forEach(course => {
         courseList.innerHTML += `
-            <div id="${course.number}-div">
+            <div id="${course.number}-div" class="course-div">
                 <p>${course.number}</p>
                 <p>${course.name}</p>
                 <p>${course.credits}</p>
@@ -35,7 +35,7 @@ async function initialize() {
         const selectedCore = coreSelect.value;
         courses.forEach(course => {
             const courseDiv = document.getElementById(`${course.number}-div`);
-            courseDiv.style.display = course.core_codes.includes(selectedCore) ? "block" : "none";
+            courseDiv.style.display = course.core_codes.includes(selectedCore) ? "grid" : "none";
         })
     });
 }
