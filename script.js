@@ -4,7 +4,7 @@ const courseList = document.getElementById("course-list");
 let courses;
 const coursesTaken = [];
 async function fetchCourses() {
-    const response = await fetch("https://sas-core-planner.onrender.com");
+    const response = await fetch("http://127.0.0.1:5000");
     console.log("fetched courses");
     courses = await response.json();
     console.log("converted to json");
