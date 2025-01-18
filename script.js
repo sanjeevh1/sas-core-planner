@@ -3,7 +3,48 @@ const coreSelect = document.getElementById("core-select");
 const courseList = document.getElementById("course-list");
 let courses;
 const coursesTaken = [];
+const coursesRequied = {
+    "CCD": 1,
+    "CCO": 1,
+    "NS": 2,
+    "SCL": 1,
+    "HST": 1,
+    "AH": 2,
+    "WC": 1,
+    "WCR": 1,
+    "WCD": 1,
+    "QQ": 1,
+    "QR": 1,
+};
 const MAX_CORES = 2;
+
+function isValid(checkedCores) {
+    if (checkedCores.length === 0) {
+        alert("Please select a core code");
+        return false;
+    }
+    if (checkedCores.length > MAX_CORES) {
+        alert(`You can only select ${MAX_CORES} core codes`);
+        return false;
+    }
+    if (checkedCores.includes("CCD") && checkedCores.includes("CCO")) {
+        alert("You cannot take CCD and CCO together");
+        return false;
+    }
+    if (checkedCores.includes("WCR") && checkedCores.includes("WCD")) {
+        alert("You cannot take WCR and WCD together");
+        return false;
+    }
+    if (checkedCores.includes("QQ") && checkedCores.includes("QR")) {
+        alert("You cannot take QQ and QR together");
+        return false;
+    }
+    if (checkedCores.includes("HST") && checkedCores.includes("SCL")) {
+        alert("You cannot take HST and SCL together");
+        return false;
+    }
+    return true;
+}
 
 function getCheckedCores(course) {
     const codesDiv = document.getElementById(`${course.number}-codes`);
@@ -16,6 +57,8 @@ function getCheckedCores(course) {
     });
     return checkedCores;
 }
+
+
 
 async function fetchCourses() {
     const response = await fetch("http://127.0.0.1:5000");
@@ -44,17 +87,10 @@ async function fetchCourses() {
         const addButton = document.getElementById(`${course.number}-btn`);
         addButton.addEventListener("click", () => {
             const checkedCores = getCheckedCores(course);
-            if (checkedCores.length === 0) {
-                alert("Please select a core code");
-                return;
-            }
-            if (checkedCores.length > MAX_CORES) {
-                alert(`You can only select ${MAX_CORES} core codes`);
-                return;
-            }
-            coursesTaken.push(course);
-            console.log(coursesTaken);
-            addButton.disabled = true;
+            if(isValid(checkedCores)) {
+                coursesTaken.push(course);
+                console.log(coursesTaken);
+            } 
         });
     });
 }
