@@ -2,23 +2,40 @@ const body = document.querySelector("body")
 const coreSelect = document.getElementById("core-select");
 const courseList = document.getElementById("course-list");
 let courses;
-const coursesTaken = [];
-const coursesRequied = {
+const coursesAdded = [];
+
+const coursesRequired = {
     "CCD": 1,
     "CCO": 1,
     "NS": 2,
     "SCL": 1,
     "HST": 1,
     "AH": 2,
-    "WC": 1,
     "WCR": 1,
     "WCD": 1,
-    "QQ": 1,
     "QR": 1,
-};
+    "QQ": 1
+}
+const coursesTaken = {
+    "CCD": 0,
+    "CCO": 0,
+    "NS": 0,
+    "SCL": 0,
+    "HST": 0,
+    "AH": 0,
+    "AHO": 0,
+    "AHP": 0,
+    "AHQ": 0,
+    "AHR": 0,
+    "WCR": 0,
+    "WCD": 0,
+    "QR": 0,
+    "QQ": 0
+}
 const MAX_CORES = 2;
 
-function isValid(checkedCores) {
+function isValid(course) {
+    const checkedCores = getCheckedCores(course);
     if (checkedCores.length === 0) {
         alert("Please select a core code");
         return false;
@@ -43,7 +60,30 @@ function isValid(checkedCores) {
         alert("You cannot take HST and SCL together");
         return false;
     }
+    if (checkedCores.length == 2 && checkedCores[0].includes("AH") && checkedCores[1].includes("AH")) {
+        alert("You cannot take two AH codes together");
+        return false;
+    }
     return true;
+}
+
+function addCourse(course) {
+    coursesAdded.push(course);
+    const codes = getCheckedCores(course);
+    codes.forEach(code => {
+        coursesTaken[code]++;
+        const codeOption = document.querySelector(`option[value='${code}']`);
+        if (code.includes("AH")) {
+            if (coursesTaken[code] === 1) {
+                coursesTaken["AH"]++;
+                const ahOption = document.querySelector("option[value='AH']");
+                ahOption.textContent = `AH (${coursesTaken["AH"]}/${coursesRequired["AH"]})`;
+            }
+            codeOption.textContent = `${code} (${coursesTaken[code]})`;
+        } else {
+            codeOption.textContent = `${code} (${coursesTaken[code]}/${coursesRequired[code]})`;
+        }
+    });
 }
 
 function getCheckedCores(course) {
@@ -86,11 +126,13 @@ async function fetchCourses() {
     courses.forEach(course => {
         const addButton = document.getElementById(`${course.number}-btn`);
         addButton.addEventListener("click", () => {
-            const checkedCores = getCheckedCores(course);
-            if(isValid(checkedCores)) {
-                coursesTaken.push(course);
-                console.log(coursesTaken);
-            } 
+            if(isValid(course)) {
+                addCourse(course);
+                addButton.disabled = true;
+                console.log("added course");
+            } else {
+                console.log("invalid course");
+            }
         });
     });
 }
@@ -100,8 +142,8 @@ async function initialize() {
         const selectedCore = coreSelect.value;
         courses.forEach(course => {
             const courseDiv = document.getElementById(`${course.number}-div`);
-            courseDiv.style.display = course.core_codes.includes(selectedCore) ? "grid" : "none";
-        })
+            courseDiv.style.display = course.core_codes.some(prefix => selectedCore.includes(prefix)) ? "grid" : "none";
+        });
     });
 }
 
