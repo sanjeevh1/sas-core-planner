@@ -9,21 +9,20 @@
     <body>
         <header>
             <select id="core-select">
-                <option value="CCD">CCD (0/1)</option>
-                <option value="CCO">CCO (0/1)</option>
-                <option value="NS">NS (0/2)</option>
-                <option value="SCL">SCL (0/1)</option>
-                <option value="HST">HST (0/1)</option>
-                <option value="AH">AH (0/2)</option>
-                <option value="AHO">AHO (0)</option>
-                <option value="AHP">AHP (0)</option>
-                <option value="AHQ">AHQ (0)</option>
-                <option value="AHR">AHR (0)</option>
-                <option value="WCR">WCR (0/1)</option>
-                <option value="WCD">WCD (0/1)</option>
-                <option value="WC">WC (0/1)</option>
-                <option value="QQ">QQ (0/1)</option>
-                <option value="QR">QR (0/1)</option>
+                <option value="CCD">CCD</option>
+                <option value="CCO">CCO</option>
+                <option value="NS">NS</option>
+                <option value="SCL">SCL</option>
+                <option value="HST">HST</option>
+                <option value="AHO">AHO</option>
+                <option value="AHP">AHP</option>
+                <option value="AHQ">AHQ</option>
+                <option value="AHR">AHR</option>
+                <option value="WCR">WCR</option>
+                <option value="WCD">WCD</option>
+                <option value="WC">WC</option>
+                <option value="QQ">QQ</option>
+                <option value="QR">QR</option>
             </select>
             <div class="course-div">
                 <p>Course #</p>
@@ -35,29 +34,29 @@
         <div id="course-list"></div>
         <table id="course-table">
             <tr>
-                <th>Course</th>
-                <th colspan="2">CC (0/2)</th>
-                <th rowspan="2">NS (0/2)</th>
-                <th colspan="2">SCL/HST (0/2)</th>
-                <th colspan="4">AH (0/2)</th>
-                <th colspan="3">WCR/WCD/WC (0/3)</th>
-                <th colspan="2">QQ/QR (0/2)</th>
+                <th rowspan="2">Course No.</th>
+                <th colspan="2">CC (<span id="CC">0</span>/2)</th>
+                <th rowspan="2">NS (<span id="NS">0</span>/2)</th>
+                <th colspan="2">SCL/HST (<span id="SCL/HST">0</span>/2)</th>
+                <th colspan="4">AH (courses: <span id="AH-courses">0</span>/2, codes: <span id="AH-codes">0</span>/2)</th>
+                <th colspan="2">WCR/WCD (<span id="WCR/WCD">0</span>/2)</th>
+                <th rowspan="2">WC (<span id="WC">0</span>/1)</th>
+                <th colspan="2">QQ/QR (<span id="QQ/QR">0</span>/2)</th>
+                <th rowspan="2">Remove</th>
             </tr>
             <tr>
-                <th>##:###:###</th>
-                <th>CCD (0/1)</th>
-                <th>CCO (0/1)</th>
-                <th>SCL (0/1)</th>
-                <th>HST (0/1)</th>
-                <th>AHO (0)</th>
-                <th>AHP (0)</th>
-                <th>AHQ (0)</th>
-                <th>AHR (0)</th>
-                <th>WCR (0/1)</th>
-                <th>WCD (0/1)</th>
-                <th>WC (0/1)</th>
-                <th>QQ (0/1)</th>
-                <th>QR (0/1)</th>
+                <th>CCD (<span id="CCD">0</span>/1)</th>
+                <th>CCO (<span id="CCO">0</span>/1)</th>
+                <th>SCL (<span id="SCL">0</span>/1)</th>
+                <th>HST (<span id="HST">0</span>/1)</th>
+                <th>AHO (<span id="AHO">0</span>)</th>
+                <th>AHP (<span id="AHP">0</span>)</th>
+                <th>AHQ (<span id="AHQ">0</span>)</th>
+                <th>AHR (<span id="AHR">0</span>)</th>
+                <th>WCR (<span id="WCR">0</span>/1)</th>
+                <th>WCD (<span id="WCD">0</span>/1)</th>
+                <th>QQ (<span id="QQ">0</span>/1)</th>
+                <th>QR (<span id="QR">0</span>/1)</th>
             </tr>
             </tr>
         </table>

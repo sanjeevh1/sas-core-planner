@@ -1,6 +1,7 @@
 const body = document.querySelector("body")
 const coreSelect = document.getElementById("core-select");
 const courseList = document.getElementById("course-list");
+const courseTable = document.getElementById("course-table");
 let courses;
 const coursesAdded = [];
 
@@ -68,22 +69,12 @@ function isValid(course) {
 }
 
 function addCourse(course) {
-    coursesAdded.push(course);
-    const codes = getCheckedCores(course);
-    codes.forEach(code => {
-        coursesTaken[code]++;
-        const codeOption = document.querySelector(`option[value='${code}']`);
-        if (code.includes("AH")) {
-            if (coursesTaken[code] === 1) {
-                coursesTaken["AH"]++;
-                const ahOption = document.querySelector("option[value='AH']");
-                ahOption.textContent = `AH (${coursesTaken["AH"]}/${coursesRequired["AH"]})`;
-            }
-            codeOption.textContent = `${code} (${coursesTaken[code]})`;
-        } else {
-            codeOption.textContent = `${code} (${coursesTaken[code]}/${coursesRequired[code]})`;
-        }
-    });
+    const courseTable = document.getElementById("course-table");
+    const row = courseTable.insertRow(-1);
+    const numberCell = row.insertCell(0);
+    numberCell.textContent = course.number;
+    const codes = course.core_codes;
+    
 }
 
 function getCheckedCores(course) {
