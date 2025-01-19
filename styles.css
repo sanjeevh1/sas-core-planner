@@ -11,3 +11,17 @@ header {
     background-color: yellow;
     margin: 0;
 }
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: monospace;
+}
+
+th, td {
+    border: 1px solid black;
+}
+
+th {
+    background-color: lightgray;
+}
