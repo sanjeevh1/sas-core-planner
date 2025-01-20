@@ -4,35 +4,24 @@ const courseList = document.getElementById("course-list");
 const courseTable = document.getElementById("course-table");
 let courses;
 const coursesAdded = [];
+const courseCounts = document.getElementsByClassName("course-count");
 
-const coursesRequired = {
-    "CCD": 1,
-    "CCO": 1,
-    "NS": 2,
-    "SCL": 1,
-    "HST": 1,
-    "AH": 2,
-    "WCR": 1,
-    "WCD": 1,
-    "QR": 1,
-    "QQ": 1
-}
-const coursesTaken = {
-    "CCD": 0,
-    "CCO": 0,
-    "NS": 0,
-    "SCL": 0,
-    "HST": 0,
-    "AH": 0,
-    "AHO": 0,
-    "AHP": 0,
-    "AHQ": 0,
-    "AHR": 0,
-    "WCR": 0,
-    "WCD": 0,
-    "QR": 0,
-    "QQ": 0
-}
+const coreCodes = [
+    "CCD",
+    "CCO",
+    "NS",
+    "SCL",
+    "HST",
+    "AHO",
+    "AHP",
+    "AHQ",
+    "AHR",
+    "WCR",
+    "WCD",
+    "WC",
+    "QQ",
+    "QR"
+];
 const MAX_CORES = 2;
 
 function isValid(course) {
@@ -73,8 +62,22 @@ function addCourse(course) {
     const row = courseTable.insertRow(-1);
     const numberCell = row.insertCell(0);
     numberCell.textContent = course.number;
-    const codes = course.core_codes;
-    
+    for(const span of courseCounts) {
+        for(const code of span.classList) {
+            if (course.core_codes.includes(code)) {
+                if (span.textContent.con)
+                span.textContent = parseInt(span.textContent) + 1;
+                break;
+            }
+        }
+    }
+    coreCodes.forEach(code => {
+        const cell = row.insertCell(-1);
+        if (course.core_codes.includes(code)) {
+            cell.style.backgroundColor = "green";
+        }
+    });
+    row.insertCell(-1);
 }
 
 function getCheckedCores(course) {
