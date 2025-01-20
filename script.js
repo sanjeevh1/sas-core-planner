@@ -65,7 +65,6 @@ function addCourse(course) {
     for(const span of courseCounts) {
         for(const code of span.classList) {
             if (course.core_codes.includes(code)) {
-                if (span.textContent.con)
                 span.textContent = parseInt(span.textContent) + 1;
                 break;
             }
