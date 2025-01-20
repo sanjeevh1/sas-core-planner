@@ -6,22 +6,31 @@ let courses;
 const coursesAdded = [];
 const courseCounts = document.getElementsByClassName("course-count");
 
-const coreCodes = [
-    "CCD",
-    "CCO",
-    "NS",
-    "SCL",
-    "HST",
-    "AHO",
-    "AHP",
-    "AHQ",
-    "AHR",
-    "WCR",
-    "WCD",
-    "WC",
-    "QQ",
-    "QR"
-];
+const codesTaken = {
+    "CCD": 0,
+    "CCO": 0,
+    "NS": 0,
+    "SCL": 0,
+    "HST": 0,
+    "AHO": 0,
+    "AHP": 0,
+    "AHQ": 0,
+    "AHR": 0,
+    "WCR": 0,
+    "WCD": 0,
+    "WC": 0,
+    "QQ": 0,
+    "QR": 0
+};
+const categoriesTaken = {
+    "CCD/CCO": 0,
+    "SCL/HST": 0,
+    "AHO/AHP/AHQ/AHR": 0,
+    "WCR/WCD": 0,
+    "QQ/QR": 0
+};
+let ahCodesTaken = 0;
+const ahCodes = document.getElementById("AH-codes");
 const MAX_CORES = 2;
 
 function isValid(course) {
@@ -62,20 +71,27 @@ function addCourse(course) {
     const row = courseTable.insertRow(-1);
     const numberCell = row.insertCell(0);
     numberCell.textContent = course.number;
-    for(const span of courseCounts) {
-        for(const code of span.classList) {
-            if (course.core_codes.includes(code)) {
-                span.textContent = parseInt(span.textContent) + 1;
-                break;
-            }
-        }
-    }
-    coreCodes.forEach(code => {
+    for(const code of Object.keys(codesTaken)) {
         const cell = row.insertCell(-1);
-        if (course.core_codes.includes(code)) {
+        if(course.core_codes.includes(code)) {
+            if(code.includes("AH") && codesTaken[code] === 0) {
+                ahCodesTaken++;
+                ahCodes.textContent = ahCodesTaken;
+            }
+            codesTaken[code]++;
+            const codeSpan = document.getElementById(code);
+            codeSpan.textContent = codesTaken[code];
             cell.style.backgroundColor = "green";
         }
-    });
+    }
+    for(const category of Object.keys(categoriesTaken)) {
+        const codes = category.split("/");
+        if (codes.some(code => course.core_codes.includes(code))) {
+            categoriesTaken[category]++;
+            const categorySpan = document.getElementById(category);
+            categorySpan.textContent = categoriesTaken[category];
+        }
+    }
     row.insertCell(-1);
 }
 
