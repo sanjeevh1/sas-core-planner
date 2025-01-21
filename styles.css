@@ -26,7 +26,12 @@ th {
     background-color: lightgray;
 }
 
-.remove-button {
+.remove-btn {
     color: red;
+    font-weight: bold;
+}
+
+.add-btn {
+    color: green;
     font-weight: bold;
 }

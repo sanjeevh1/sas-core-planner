@@ -32,7 +32,8 @@ let ahCodesTaken = 0;
 const ahCodes = document.getElementById("AH-codes");
 
 function removeCourse(course) {
-    const row = document.getElementById(course.number);
+    console.log("Removing course");
+    const row = document.getElementById(`${course.number}-row`);
     courseTable.deleteRow(row.rowIndex);
     for(const code of Object.keys(codesTaken)) {
         if(course.core_codes.includes(code)) {
@@ -53,14 +54,21 @@ function removeCourse(course) {
             categorySpan.textContent = categoriesTaken[category];
         }
     }
-    const addBtn = document.getElementById(`${course.number}-btn`);
-    addBtn.disabled = false;
+    const courseDiv = document.getElementById(`${course.number}-div`);
+    const removeBtn = courseDiv.querySelector("button")
+    removeBtn.remove();
+    const addBtn = document.createElement("button");
+    addBtn.classList.add("add-btn");
+    addBtn.textContent = "+";
+    addBtn.addEventListener("click", () => void addCourse(course));
+    courseDiv.appendChild(addBtn);
 }
 
 function addCourse(course) {
+    console.log("adding course");
     const courseTable = document.getElementById("course-table");
     const row = courseTable.insertRow(-1);
-    row.id = course.number;
+    row.id = `${course.number}-row`;
     const numberCell = row.insertCell(0);
     numberCell.textContent = course.number;
     for(const code of Object.keys(codesTaken)) {
@@ -86,12 +94,18 @@ function addCourse(course) {
     }
     const removeCell = row.insertCell(-1);
     const removeButton = document.createElement("button");
-    removeButton.classList.add("remove-button");
+    removeButton.classList.add("remove-btn");
     removeButton.textContent = "-";
     removeCell.appendChild(removeButton);
     removeButton.addEventListener("click", () => void removeCourse(course));
-    const addBtn = document.getElementById(`${course.number}-btn`);
-    addBtn.disabled = true;
+    const courseDiv = document.getElementById(`${course.number}-div`);
+    const addBtn = courseDiv.querySelector("button")
+    addBtn.remove();
+    const removeBtn = document.createElement("button");
+    removeBtn.classList.add("remove-btn");
+    removeBtn.textContent = "-";
+    removeBtn.addEventListener("click", () => void removeCourse(course));
+    courseDiv.appendChild(removeBtn);
 }
 
 async function fetchCourses() {
@@ -101,17 +115,18 @@ async function fetchCourses() {
     console.log("converted to json");
     courses.forEach(course => {
         courseList.innerHTML += `
-            <div class="course-div">
+            <div class="course-div" id="${course.number}-div">
                 <p>${course.number}</p>
                 <p>${course.name}</p>
                 <p>${course.credits}</p>
                 <p>${course.core_codes.join(", ")}</p>
-                <button id="${course.number}-btn">Add</button>
+                <button class="add-btn">+</button>
             </div>
         `;
     });
     courses.forEach(course => {
-        const addButton = document.getElementById(`${course.number}-btn`);
+        const courseDiv = document.getElementById(`${course.number}-div`);
+        const addButton = courseDiv.querySelector("button");
         addButton.addEventListener("click", () => void addCourse(course));
     });
 }
