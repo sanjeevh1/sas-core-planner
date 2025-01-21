@@ -33,6 +33,30 @@ let ahCodesTaken = 0;
 const ahCodes = document.getElementById("AH-codes");
 const MAX_CORES = 2;
 
+function removeCourse(course, row) {
+    const courseTable = document.getElementById("course-table");
+    courseTable.deleteRow(row.rowIndex);
+    for(const code of Object.keys(codesTaken)) {
+        if(course.core_codes.includes(code)) {
+            codesTaken[code]--;
+            const codeSpan = document.getElementById(code);
+            codeSpan.textContent = codesTaken[code];
+            if(code.includes("AH") && codesTaken[code] === 0) {
+                ahCodesTaken--;
+                ahCodes.textContent = ahCodesTaken;
+            }
+        }
+    }
+    for(const category of Object.keys(categoriesTaken)) {
+        const codes = category.split("/");
+        if (codes.some(code => course.core_codes.includes(code))) {
+            categoriesTaken[category]--;
+            const categorySpan = document.getElementById(category);
+            categorySpan.textContent = categoriesTaken[category];
+        }
+    }
+}
+
 function addCourse(course) {
     const courseTable = document.getElementById("course-table");
     const row = courseTable.insertRow(-1);
@@ -59,7 +83,12 @@ function addCourse(course) {
             categorySpan.textContent = categoriesTaken[category];
         }
     }
-    row.insertCell(-1);
+    const removeCell = row.insertCell(-1);
+    const removeButton = document.createElement("button");
+    removeButton.classList.add("remove-button");
+    removeButton.textContent = "-";
+    removeCell.appendChild(removeButton);
+    removeButton.addEventListener("click", () => void removeCourse(course, row));
 }
 
 async function fetchCourses() {

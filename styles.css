@@ -25,3 +25,8 @@ th, td {
 th {
     background-color: lightgray;
 }
+
+.remove-button {
+    color: red;
+    font-weight: bold;
+}
