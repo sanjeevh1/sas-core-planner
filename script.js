@@ -128,15 +128,17 @@ async function fetchCourses() {
         const courseDiv = document.getElementById(`${course.number}-div`);
         const addButton = courseDiv.querySelector("button");
         addButton.addEventListener("click", () => void addCourse(course));
+        courseDiv.style.display = "none";
     });
 }
 async function initialize() {
     await fetchCourses();
     coreSelect.addEventListener("change", () => {
         const selectedCore = coreSelect.value;
+        courseTable.style.display = selectedCore === "Added" ? "block" : "none";
         courses.forEach(course => {
             const courseDiv = document.getElementById(`${course.number}-div`);
-            courseDiv.style.display = course.core_codes.some(prefix => selectedCore.includes(prefix)) ? "grid" : "none";
+            courseDiv.style.display = (selectedCore.value !== "Added" && course.core_codes.some(prefix => selectedCore.includes(prefix))) ? "grid" : "none";
         });
     });
 }
