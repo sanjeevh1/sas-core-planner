@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: "/sas_core_planner/sas-core-planner/"
+  base: "/sas-core-planner/"
 })
